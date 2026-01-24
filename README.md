@@ -1,3 +1,3 @@
-NATS Quick Configurations
+NATS Quick-Launch Docker Configurations
 
 

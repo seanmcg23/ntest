@@ -2,37 +2,52 @@ services:
   nats1:
     image: nats:latest
     container_name: nats1
-    command: ["-c","/etc/nats/server.conf","--server_name","nats1","-m","8222"]
+    command: [
+      "-c","/etc/nats/server.conf",
+      "--server_name","nats1",
+      "--client_advertise","localhost:4222",
+      "-m","8222"]
     ports:
       - "4222:4222"
       - "8222:8222"
       - "6222:6222"
     volumes:
       - ./server.conf:/etc/nats/server.conf:ro
+      - ./resolver.conf:/etc/nats/resolver.conf:ro
       - nats1-data:/data
 
   nats2:
     image: nats:latest
     container_name: nats2
-    command: ["-c","/etc/nats/server.conf","--server_name","nats2","-m","8222"]
+    command: [
+      "-c","/etc/nats/server.conf",
+      "--server_name","nats2",
+      "--client_advertise","localhost:4222",
+      "-m","8222"]
     ports:
       - "4223:4222"
       - "8223:8222"
       - "6223:6222"
     volumes:
       - ./server.conf:/etc/nats/server.conf:ro
+      - ./resolver.conf:/etc/nats/resolver.conf:ro
       - nats2-data:/data
 
   nats3:
     image: nats:latest
     container_name: nats3
-    command: ["-c","/etc/nats/server.conf","--server_name","nats3","-m","8222"]
+    command: [
+      "-c","/etc/nats/server.conf",
+      "--server_name","nats3",
+      "--client_advertise","localhost:4222",
+      "-m","8222"]
     ports:
       - "4224:4222"
       - "8224:8222"
       - "6224:6222"
     volumes:
       - ./server.conf:/etc/nats/server.conf:ro
+      - ./resolver.conf:/etc/nats/resolver.conf:ro
       - nats3-data:/data
 
   nats-box:
