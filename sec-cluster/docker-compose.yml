@@ -15,6 +15,8 @@ services:
       - ./server.conf:/etc/nats/server.conf:ro
       - ./resolver.conf:/etc/nats/resolver.conf:ro
       - nats1-data:/data
+    networks:
+      - nats-network 
 
   nats2:
     image: nats:latest
@@ -22,7 +24,7 @@ services:
     command: [
       "-c","/etc/nats/server.conf",
       "--server_name","nats2",
-      "--client_advertise","localhost:4222",
+      "--client_advertise","localhost:4223",
       "-m","8222"]
     ports:
       - "4223:4222"
@@ -32,14 +34,15 @@ services:
       - ./server.conf:/etc/nats/server.conf:ro
       - ./resolver.conf:/etc/nats/resolver.conf:ro
       - nats2-data:/data
-
+    networks:
+      - nats-network 
   nats3:
     image: nats:latest
     container_name: nats3
     command: [
       "-c","/etc/nats/server.conf",
       "--server_name","nats3",
-      "--client_advertise","localhost:4222",
+      "--client_advertise","localhost:4224",
       "-m","8222"]
     ports:
       - "4224:4222"
@@ -49,14 +52,57 @@ services:
       - ./server.conf:/etc/nats/server.conf:ro
       - ./resolver.conf:/etc/nats/resolver.conf:ro
       - nats3-data:/data
-
+    networks:
+      - nats-network 
+  nats4:
+    image: nats:latest
+    container_name: nats4
+    command: [
+      "-c","/etc/nats/server.conf",
+      "--server_name","nats4",
+      "--client_advertise","localhost:4225",
+      "-m","8222"]
+    ports:
+      - "4225:4222"
+      - "8225:8222"
+      - "6225:6222"
+    volumes:
+      - ./server.conf:/etc/nats/server.conf:ro
+      - ./resolver.conf:/etc/nats/resolver.conf:ro
+      - nats4-data:/data
+    networks:
+      - nats-network 
+  nats5:
+    image: nats:latest
+    container_name: nats5
+    command: [
+      "-c","/etc/nats/server.conf",
+      "--server_name","nats5",
+      "--client_advertise","localhost:4226",
+      "-m","8222"]
+    ports:
+      - "4226:4222"
+      - "8226:8222"
+      - "6226:6222"
+    volumes:
+      - ./server.conf:/etc/nats/server.conf:ro
+      - ./resolver.conf:/etc/nats/resolver.conf:ro
+      - nats5-data:/data
+    networks:
+      - nats-network 
   nats-box:
     image: natsio/nats-box:latest
     container_name: nats-box
-    depends_on: [nats1, nats2, nats3]
+    depends_on: [nats1, nats2, nats3, nats4, nats5]
     entrypoint: ["sleep","infinity"]
-
+    networks:
+      - nats-network 
 volumes:
   nats1-data: {}
   nats2-data: {}
   nats3-data: {}
+  nats4-data: {}
+  nats5-data: {}
+networks:
+  nats-network:
+    driver: bridge
